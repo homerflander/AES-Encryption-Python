@@ -539,6 +539,97 @@ def subbyte(myhexstring):
 
     return temp2
 
+def mixcolumn(bv3):
+        bv01 = (bv3[0:8])
+        bv23 = (bv3[8:16])
+        bv45 = (bv3[16:24])
+        bv67 = (bv3[24:32])
+        bv89 = (bv3[32:40])
+        bv1011 = (bv3[40:48])
+        bv1213 = (bv3[48:56])
+        bv1415 = (bv3[56:64])
+        bv1617 = (bv3[64:72])
+        bv1819 = (bv3[72:80])
+        bv2021 = (bv3[80:88])
+        bv2223 = (bv3[88:96])
+        bv2425 = (bv3[96:104])
+        bv2627 = (bv3[104:112])
+        bv2829 = (bv3[112:120])
+        bv3031 = (bv3[120:128])
+
+        eightlim = BitVector(bitstring='100011011')
+        one = BitVector(bitstring='0001')
+        two = BitVector(bitstring='0010')
+        three = BitVector(bitstring='0011')
+
+        tempbv1 = bv01.gf_multiply_modular(two, eightlim, 8)
+        tempbv2 = bv23.gf_multiply_modular(three, eightlim, 8)
+        newbv01 = tempbv1 ^ tempbv2 ^ bv45 ^ bv67
+
+        tempbv2 = bv23.gf_multiply_modular(two, eightlim, 8)
+        tempbv3 = bv45.gf_multiply_modular(three, eightlim, 8)
+        newbv23 = bv01 ^ tempbv2 ^ tempbv3 ^ bv67
+
+        tempbv3 = bv45.gf_multiply_modular(two, eightlim, 8)
+        tempbv4 = bv67.gf_multiply_modular(three, eightlim, 8)
+        newbv45 = bv01 ^ bv23 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv01.gf_multiply_modular(three, eightlim, 8)
+        tempbv4 = bv67.gf_multiply_modular(two, eightlim, 8)
+        newbv67 = tempbv1 ^ bv23 ^ bv45 ^ tempbv4
+
+        tempbv1 = bv89.gf_multiply_modular(two, eightlim, 8)
+        tempbv2 = bv1011.gf_multiply_modular(three, eightlim, 8)
+        newbv89 = tempbv1 ^ tempbv2 ^ bv1213 ^ bv1415
+
+        tempbv2 = bv1011.gf_multiply_modular(two, eightlim, 8)
+        tempbv3 = bv1213.gf_multiply_modular(three, eightlim, 8)
+        newbv1011 = bv89 ^ tempbv2 ^ tempbv3 ^ bv1415
+
+        tempbv3 = bv1213.gf_multiply_modular(two, eightlim, 8)
+        tempbv4 = bv1415.gf_multiply_modular(three, eightlim, 8)
+        newbv1213 = bv89 ^ bv1011 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv89.gf_multiply_modular(three, eightlim, 8)
+        tempbv4 = bv1415.gf_multiply_modular(two, eightlim, 8)
+        newbv1415 = tempbv1 ^ bv1011 ^ bv1213 ^ tempbv4
+
+        tempbv1 = bv1617.gf_multiply_modular(two, eightlim, 8)
+        tempbv2 = bv1819.gf_multiply_modular(three, eightlim, 8)
+        newbv1617 = tempbv1 ^ tempbv2 ^ bv2021 ^ bv2223
+
+        tempbv2 = bv1819.gf_multiply_modular(two, eightlim, 8)
+        tempbv3 = bv2021.gf_multiply_modular(three, eightlim, 8)
+        newbv1819 = bv1617 ^ tempbv2 ^ tempbv3 ^ bv2223
+
+        tempbv3 = bv2021.gf_multiply_modular(two, eightlim, 8)
+        tempbv4 = bv2223.gf_multiply_modular(three, eightlim, 8)
+        newbv2021 = bv1617 ^ bv1819 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv1617.gf_multiply_modular(three, eightlim, 8)
+        tempbv4 = bv2223.gf_multiply_modular(two, eightlim, 8)
+        newbv2223 = tempbv1 ^ bv1819 ^ bv2021 ^ tempbv4
+
+        tempbv1 = bv2425.gf_multiply_modular(two, eightlim, 8)
+        tempbv2 = bv2627.gf_multiply_modular(three, eightlim, 8)
+        newbv2425 = tempbv1 ^ tempbv2 ^ bv2829 ^ bv3031
+
+        tempbv2 = bv2627.gf_multiply_modular(two, eightlim, 8)
+        tempbv3 = bv2829.gf_multiply_modular(three, eightlim, 8)
+        newbv2627 = bv2425 ^ tempbv2 ^ tempbv3 ^ bv3031
+
+        tempbv3 = bv2829.gf_multiply_modular(two, eightlim, 8)
+        tempbv4 = bv3031.gf_multiply_modular(three, eightlim, 8)
+        newbv2829 = bv2425 ^ bv2627 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv2425.gf_multiply_modular(three, eightlim, 8)
+        tempbv4 = bv3031.gf_multiply_modular(two, eightlim, 8)
+        newbv3031 = tempbv1 ^ bv2627 ^ bv2829 ^ tempbv4
+
+        newbv = newbv01 + newbv23 + newbv45 + newbv67 + newbv89 + newbv1011 + newbv1213 + newbv1415 + newbv1617 + newbv1819 + newbv2021 + newbv2223 + newbv2425 + newbv2627 + newbv2829 + newbv3031
+        newbvashex = newbv.get_bitvector_in_hex()
+        return newbvashex
+
 def shiftrow(temp2):
 
     if(len(temp2)==8):
