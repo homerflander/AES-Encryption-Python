@@ -1,160 +1,12 @@
-from BitVector import *#use BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.purdue.edu/kak/dist/BitVector-3.4.4.html
-from AESfunc import *
+from BitVector import *
 
-if len(sys.argv) is not 3:  # takes in two arguments for plaintext.txt and ciphertext.txt
-    sys.exit("Error, script needs two command-line arguments. (Plaintext.txt File and Ciphertext.txt File)")
-
-PassPhrase = "Thats my Kung Fu"#set static pass for now 16 char * 8 bits = 128 bits strength
-
-# open message to encrypt
-file = open(sys.argv[1], "r")
-message = (file.read())
-print("Inside your plaintext message is: %s" % message)
-start = 0
-end = 0
-outputhex = ""
-# add round key
-for y in range(1, (len(message)//16)+1):  # loop to encrypt all parts of the message
-    eightbit = message[start:end + 16]
-    print("The round key string is : %s" % PassPhrase)
-    print("The part of the message to be encrypted is : %s" % eightbit)
-    bv1 = BitVector(textstring=eightbit)
-    print("The plaintext message in hex is : %s" % bv1.get_bitvector_in_hex())
-    bv2 = BitVector(textstring=PassPhrase)
-    print("The password in hex/ roundkey one is : %s" % bv2.get_bitvector_in_hex())
-    resultbv=bv1^bv2
-    roundkey=findroundkey(bv2.get_bitvector_in_hex(),1)
-    print("The round key one is : %s" % roundkey)
-    myhexstring = resultbv.get_bitvector_in_hex()
-    print("The initial adding round key output is : %s" % myhexstring)
-
-    for x in range(1, 10):  # loop through 9 rounds
-        # sub byte
-        print("Round: %i" % x)
-        myhexstring = resultbv.get_bitvector_in_hex()
-
-        temp2=subbyte(myhexstring)
-        print("The subbyte output is: %s" % temp2)
-        # shift rows
-
-        temp3=shiftrow(temp2)
-
-
-        print("The shiftrow output is: %s" % temp3)
-
-        # mix column
-        bv3 = BitVector(hexstring=temp3)
-
-        bv01 = (bv3[0:8])
-        bv23 = (bv3[8:16])
-        bv45 = (bv3[16:24])
-        bv67 = (bv3[24:32])
-        bv89 = (bv3[32:40])
-        bv1011 = (bv3[40:48])
-        bv1213 = (bv3[48:56])
-        bv1415 = (bv3[56:64])
-        bv1617 = (bv3[64:72])
-        bv1819 = (bv3[72:80])
-        bv2021 = (bv3[80:88])
-        bv2223 = (bv3[88:96])
-        bv2425 = (bv3[96:104])
-        bv2627 = (bv3[104:112])
-        bv2829 = (bv3[112:120])
-        bv3031 = (bv3[120:128])
-
-        eightlim = BitVector(bitstring='100011011')
-        one = BitVector(bitstring='0001')
-        two = BitVector(bitstring='0010')
-        three = BitVector(bitstring='0011')
-
-        tempbv1 = bv01.gf_multiply_modular(two, eightlim, 8)
-        tempbv2 = bv23.gf_multiply_modular(three, eightlim, 8)
-        newbv01 = tempbv1 ^ tempbv2 ^ bv45 ^ bv67
-
-        tempbv2 = bv23.gf_multiply_modular(two, eightlim, 8)
-        tempbv3 = bv45.gf_multiply_modular(three, eightlim, 8)
-        newbv23 = bv01 ^ tempbv2 ^ tempbv3 ^ bv67
-
-        tempbv3 = bv45.gf_multiply_modular(two, eightlim, 8)
-        tempbv4 = bv67.gf_multiply_modular(three, eightlim, 8)
-        newbv45 = bv01 ^ bv23 ^ tempbv3 ^ tempbv4
-
-        tempbv1 = bv01.gf_multiply_modular(three, eightlim, 8)
-        tempbv4 = bv67.gf_multiply_modular(two, eightlim, 8)
-        newbv67 = tempbv1 ^ bv23 ^ bv45 ^ tempbv4
-
-        tempbv1 = bv89.gf_multiply_modular(two, eightlim, 8)
-        tempbv2 = bv1011.gf_multiply_modular(three, eightlim, 8)
-        newbv89 = tempbv1 ^ tempbv2 ^ bv1213 ^ bv1415
-
-        tempbv2 = bv1011.gf_multiply_modular(two, eightlim, 8)
-        tempbv3 = bv1213.gf_multiply_modular(three, eightlim, 8)
-        newbv1011 = bv89 ^ tempbv2 ^ tempbv3 ^ bv1415
-
-        tempbv3 = bv1213.gf_multiply_modular(two, eightlim, 8)
-        tempbv4 = bv1415.gf_multiply_modular(three, eightlim, 8)
-        newbv1213 = bv89 ^ bv1011 ^ tempbv3 ^ tempbv4
-
-        tempbv1 = bv89.gf_multiply_modular(three, eightlim, 8)
-        tempbv4 = bv1415.gf_multiply_modular(two, eightlim, 8)
-        newbv1415 = tempbv1 ^ bv1011 ^ bv1213 ^ tempbv4
-
-        tempbv1 = bv1617.gf_multiply_modular(two, eightlim, 8)
-        tempbv2 = bv1819.gf_multiply_modular(three, eightlim, 8)
-        newbv1617 = tempbv1 ^ tempbv2 ^ bv2021 ^ bv2223
-
-        tempbv2 = bv1819.gf_multiply_modular(two, eightlim, 8)
-        tempbv3 = bv2021.gf_multiply_modular(three, eightlim, 8)
-        newbv1819 = bv1617 ^ tempbv2 ^ tempbv3 ^ bv2223
-
-        tempbv3 = bv2021.gf_multiply_modular(two, eightlim, 8)
-        tempbv4 = bv2223.gf_multiply_modular(three, eightlim, 8)
-        newbv2021 = bv1617 ^ bv1819 ^ tempbv3 ^ tempbv4
-
-        tempbv1 = bv1617.gf_multiply_modular(three, eightlim, 8)
-        tempbv4 = bv2223.gf_multiply_modular(two, eightlim, 8)
-        newbv2223 = tempbv1 ^ bv1819 ^ bv2021 ^ tempbv4
-
-        tempbv1 = bv2425.gf_multiply_modular(two, eightlim, 8)
-        tempbv2 = bv2627.gf_multiply_modular(three, eightlim, 8)
-        newbv2425 = tempbv1 ^ tempbv2 ^ bv2829 ^ bv3031
-
-        tempbv2 = bv2627.gf_multiply_modular(two, eightlim, 8)
-        tempbv3 = bv2829.gf_multiply_modular(three, eightlim, 8)
-        newbv2627 = bv2425 ^ tempbv2 ^ tempbv3 ^ bv3031
-
-        tempbv3 = bv2829.gf_multiply_modular(two, eightlim, 8)
-        tempbv4 = bv3031.gf_multiply_modular(three, eightlim, 8)
-        newbv2829 = bv2425 ^ bv2627 ^ tempbv3 ^ tempbv4
-
-        tempbv1 = bv2425.gf_multiply_modular(three, eightlim, 8)
-        tempbv4 = bv3031.gf_multiply_modular(two, eightlim, 8)
-        newbv3031 = tempbv1 ^ bv2627 ^ bv2829 ^ tempbv4
-
-        newbv = newbv01 + newbv23 + newbv45 + newbv67 + newbv89 + newbv1011 + newbv1213 + newbv1415 + newbv1617 + newbv1819 + newbv2021 + newbv2223 + newbv2425 + newbv2627 + newbv2829 + newbv3031
-        newbvashex = newbv.get_bitvector_in_hex()
-        print("The Mixcolumn Output is: %s" % newbvashex)
-
-        #add roundkey
-        bv1 = BitVector(bitlist=newbv)
-        bv2 = BitVector(hexstring=roundkey)
-        resultbv = bv1 ^ bv2
-        myhexresult = resultbv.get_bitvector_in_hex()
-        print("The output after adding the round key: %s" % myhexresult)
-        roundkey=findroundkey(roundkey,x+1)
-        print("The round key %i is " %(x+1) + roundkey)
-
-
-        # sub byte round 10
-    print("Round 10:")
-    myhexstring = resultbv.get_bitvector_in_hex()
-
+def subbyte(myhexstring):
     loop = 0
     loop2 = 0
     temp2 = ""
-    for loop in range(0, 16):
+    for loop in range(0, len(myhexstring)):
         temp = myhexstring[loop2:loop2 + 2]
-        if temp == "00":
+        if temp == "00":  # fix this later with a 2D array, this is ugly
             temp = "63"
         elif temp == "01":
             temp = "7c"
@@ -684,61 +536,87 @@ for y in range(1, (len(message)//16)+1):  # loop to encrypt all parts of the mes
 
         loop2 = loop2 + 2
         temp2 = temp2 + temp
-    print("The subbyte output of round 10 is: %s" % temp2)
 
-    # shift rows
-    shiftrow = temp2
+    return temp2
 
-    temp3 = temp2[0] + temp2[1]
+def shiftrow(temp2):
 
-    temp3 = temp3 + temp2[10]
-    temp3 = temp3 + temp2[11]
-    temp3 = temp3 + temp2[20]
-    temp3 = temp3 + temp2[21]
-    temp3 = temp3 + temp2[30]
-    temp3 = temp3 + temp2[31]
-    temp3 = temp3 + temp2[8]
-    temp3 = temp3 + temp2[9]
-    temp3 = temp3 + temp2[18]
-    temp3 = temp3 + temp2[19]
-    temp3 = temp3 + temp2[28]
-    temp3 = temp3 + temp2[29]
-    temp3 = temp3 + temp2[6]
-    temp3 = temp3 + temp2[7]
-    temp3 = temp3 + temp2[16]
-    temp3 = temp3 + temp2[17]
-    temp3 = temp3 + temp2[26]
-    temp3 = temp3 + temp2[27]
-    temp3 = temp3 + temp2[4]
-    temp3 = temp3 + temp2[5]
-    temp3 = temp3 + temp2[14]
-    temp3 = temp3 + temp2[15]
-    temp3 = temp3 + temp2[24]
-    temp3 = temp3 + temp2[25]
-    temp3 = temp3 + temp2[2]
-    temp3 = temp3 + temp2[3]
-    temp3 = temp3 + temp2[12]
-    temp3 = temp3 + temp2[13]
-    temp3 = temp3 + temp2[22]
-    temp3 = temp3 + temp2[23]
+    if(len(temp2)==8):
+        temp3=temp2[2]+temp2[3]+temp2[4]+temp2[5]+temp2[6]+temp2[7]+temp2[0]+temp2[1]
+        return temp3
+    else:
+        temp3 = temp2[0] + temp2[1]
 
-    print("The output after shiftrow is: %s" % temp3)
-    # addround key
-    newbv = BitVector(hexstring=temp3)
-    bv1 = BitVector(bitlist=newbv)
-    bv2 = BitVector(hexstring=roundkey)
-    resultbv = bv1 ^ bv2
-    myhexstring = resultbv.get_bitvector_in_hex()
-    print("The output after adding the roundkey is: %s" % myhexstring)
+        temp3 = temp3 + temp2[10]  # fix create a function to continously add on, this is bad
+        temp3 = temp3 + temp2[11]
+        temp3 = temp3 + temp2[20]
+        temp3 = temp3 + temp2[21]
+        temp3 = temp3 + temp2[30]
+        temp3 = temp3 + temp2[31]
+        temp3 = temp3 + temp2[8]
+        temp3 = temp3 + temp2[9]
+        temp3 = temp3 + temp2[18]
+        temp3 = temp3 + temp2[19]
+        temp3 = temp3 + temp2[28]
+        temp3 = temp3 + temp2[29]
+        temp3 = temp3 + temp2[6]
+        temp3 = temp3 + temp2[7]
+        temp3 = temp3 + temp2[16]
+        temp3 = temp3 + temp2[17]
+        temp3 = temp3 + temp2[26]
+        temp3 = temp3 + temp2[27]
+        temp3 = temp3 + temp2[4]
+        temp3 = temp3 + temp2[5]
+        temp3 = temp3 + temp2[14]
+        temp3 = temp3 + temp2[15]
+        temp3 = temp3 + temp2[24]
+        temp3 = temp3 + temp2[25]
+        temp3 = temp3 + temp2[2]
+        temp3 = temp3 + temp2[3]
+        temp3 = temp3 + temp2[12]
+        temp3 = temp3 + temp2[13]
+        temp3 = temp3 + temp2[22]
+        temp3 = temp3 + temp2[23]
 
-    outputhextemp = resultbv.get_hex_string_from_bitvector()
-    print("The outputhex value for this part of the message is: %s" % outputhextemp)
-    outputhex = outputhex + outputhextemp
-    start = start + 16
-    end = end + 16
+        return temp3
 
-# output encrypted to file
-print("The outputhex value for the entire message is: %s" % outputhex)
-FILEOUT = open(sys.argv[2], 'w')
-FILEOUT.write(outputhex)
-FILEOUT.close()
+def xor(temp1,temp2):
+        temp1=BitVector(hexstring=temp1)
+        temp2=BitVector(hexstring=temp2)
+        temp3=temp1^temp2
+        return temp3.get_bitvector_in_hex()
+
+def findroundkey(temp1, case):
+    w0=temp1[0:8]
+    w1=temp1[8:16]
+    w2=temp1[16:24]
+    w3=temp1[24:32]
+    temp2=temp1[24:32]
+    temp2=shiftrow(temp2)
+    temp2=subbyte(temp2)
+    if(case==1):
+        temp2=xor(temp2,'01000000')
+    elif(case==2):
+        temp2 = xor(temp2, '02000000')
+    elif (case == 3):
+        temp2 = xor(temp2, '04000000')
+    elif (case == 4):
+        temp2 = xor(temp2, '08000000')
+    elif (case == 5):
+        temp2 = xor(temp2, '10000000')
+    elif (case == 6):
+        temp2 = xor(temp2, '20000000')
+    elif (case == 7):
+        temp2 = xor(temp2, '40000000')
+    elif (case == 8):
+        temp2 = xor(temp2, '80000000')
+    elif (case == 9):
+        temp2 = xor(temp2, '1b000000')
+    elif (case == 10):
+        temp2 = xor(temp2, '36000000')
+    w4=xor(w0, temp2)
+    w5=xor(w1, w4)
+    w6=xor(w2, w5)
+    w7=xor(w3, w6)
+    temp3=w4+w5+w6+w7
+    return temp3
