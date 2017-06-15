@@ -1,4 +1,4 @@
-# AES-Encryption-Python (Incomplete/In-Progress)
+# AES-Encryption-Python (Incomplete/Working)
 
 Created by Van. June 2017 </br>
 
