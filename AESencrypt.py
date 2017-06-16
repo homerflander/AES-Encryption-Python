@@ -1,5 +1,6 @@
 from BitVector import *#use BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.purdue.edu/kak/dist/BitVector-3.4.4.html
 from AESfunc import *
+import math
 
 if len(sys.argv) is not 3:  # takes in two arguments for plaintext.txt and ciphertext.txt
     sys.exit("Error, script needs two command-line arguments. (Plaintext.txt File and Ciphertext.txt File)")
@@ -12,10 +13,21 @@ message = (file.read())
 print("Inside your plaintext message is: %s" % message)
 start = 0
 end = 0
+length = len(message)
+loopmsg = 0.00
+loopmsg = len(message)/16
 outputhex = ""
 # add round key
-for y in range(1, (len(message)//16)+1):  # loop to encrypt all parts of the message
-    eightbit = message[start:end + 16]
+for y in range(1, math.ceil(loopmsg)+1):  # loop to encrypt all parts of the message
+    if(end+16<length):
+        eightbit = message[start:end + 16]
+    else:
+        eightbit = message[start:length]
+        for z in range(0,((end+16)-length)):
+            eightbit=BitVector(textstring=eightbit)
+            eightbit=eightbit.get_bitvector_in_hex()+"00"
+            eightbit=BitVector(hexstring=eightbit).get_bitvector_in_ascii()
+            z=z+1
     print("The round key string is : %s" % PassPhrase)
     print("The part of the message to be encrypted is : %s" % eightbit)
     bv1 = BitVector(textstring=eightbit)
