@@ -7,4 +7,4 @@ BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.p
 Nist Announcement Publication of AES in 2001 at http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf </br>
 Used Kavaliro Slides at https://kavaliro.com/wp-content/uploads/2014/03/AES.pdf to check work </br>
 
-Script in Python to encrypt using the 128 bits AES algorithm. A plain text text file is taken as the input, then an encrypted text file is outputted.</br>
+Script in Python to encrypt using the 128 bits AES algorithm, ECB mode with hex "00" as padding for each character. A plain text text file is taken as the input, then an encrypted text file is outputted.</br>
