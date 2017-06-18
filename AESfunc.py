@@ -1,4 +1,4 @@
-from BitVector import *
+from BitVector import * #use BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.purdue.edu/kak/dist/BitVector-3.4.4.html
 
 def subbyte(myhexstring):
     loop = 0

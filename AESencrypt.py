@@ -1,11 +1,24 @@
-from BitVector import *#use BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.purdue.edu/kak/dist/BitVector-3.4.4.html
 from AESfunc import *
 import math
 
 if len(sys.argv) is not 3:  # takes in two arguments for plaintext.txt and ciphertext.txt
     sys.exit("Error, script needs two command-line arguments. (Plaintext.txt File and Ciphertext.txt File)")
 
-PassPhrase = "Thats my Kung Fu"#set static pass for now 16 char * 8 bits = 128 bits strength
+#PassPhrase = "Thats my Kung Fu"#set static pass for now 16 char * 8 bits = 128 bits strength
+
+PassPhrase = ""
+while(len(PassPhrase)!=16):
+    print("Enter in the 16 character passphrase to encrypt your text file %s" %sys.argv[1])
+    PassPhrase=input()
+    print(len(PassPhrase))
+    if(len(PassPhrase)<16):
+        while(len(PassPhrase)!=16):
+            PassPhrase=PassPhrase+" "
+    if(len(PassPhrase)>16):
+        print("Your passphrase was larger than 16, truncating passphrase.")
+        PassPhrase=PassPhrase[0:16]
+
+
 
 # open message to encrypt
 file = open(sys.argv[1], "r")
