@@ -2,6 +2,11 @@
 
 Created by Van. June 2017 </br>
 
+TO DO LIST:</br>
+IMPORVE READBILITY TO AESFUNC/ SIMPLIFY IT</br>
+CREATE AESDECRYPT</br>
+CREATE DEMO PICS</br>
+
 Resource(s) Used: </br>
 BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.purdue.edu/kak/dist/BitVector-3.4.4.html </br>
 Nist Announcement Publication of AES in 2001 at http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf </br>
