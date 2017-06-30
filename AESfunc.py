@@ -1,6 +1,7 @@
 from BitVector import * #use BitVector class created by Avinash Kak (kak@purdue.edu) at https://engineering.purdue.edu/kak/dist/BitVector-3.4.4.html
 import math #import math module to use function such as ceiling
 
+#subbyte function takes in a hex string to puts it through the lookup table to ouput a converted hex string
 def subbyte(myhexstring):
     loop2 = 0
     temp=""
@@ -31,6 +32,7 @@ def subbyte(myhexstring):
         y = ""
         x=myhexstring[loop2]
         y=myhexstring[loop2+1]
+        #convert character to integer
         if(x=='0'):
             x=0
         elif (x=='1'):
@@ -101,6 +103,7 @@ def subbyte(myhexstring):
         temp2 = temp2 + temp
     return temp2
 
+#mix column takes in an a 128 bit string, performs a series of matrix multiplication to output a hex string
 def mixcolumn(bv3):
         bv01 = (bv3[0:8])
         bv23 = (bv3[8:16])
@@ -192,53 +195,24 @@ def mixcolumn(bv3):
         newbvashex = newbv.get_bitvector_in_hex()
         return newbvashex
 
+#shiftrow takes in a hex string of the size 8 or 32, then performs a shifting operation to output the a converted hex string
 def shiftrow(temp2):
 
     if(len(temp2)==8):
         temp3=temp2[2]+temp2[3]+temp2[4]+temp2[5]+temp2[6]+temp2[7]+temp2[0]+temp2[1]
         return temp3
     else:
-        temp3 = temp2[0] + temp2[1]
-
-        temp3 = temp3 + temp2[10]  # fix create a function to continously add on, this is bad
-        temp3 = temp3 + temp2[11]
-        temp3 = temp3 + temp2[20]
-        temp3 = temp3 + temp2[21]
-        temp3 = temp3 + temp2[30]
-        temp3 = temp3 + temp2[31]
-        temp3 = temp3 + temp2[8]
-        temp3 = temp3 + temp2[9]
-        temp3 = temp3 + temp2[18]
-        temp3 = temp3 + temp2[19]
-        temp3 = temp3 + temp2[28]
-        temp3 = temp3 + temp2[29]
-        temp3 = temp3 + temp2[6]
-        temp3 = temp3 + temp2[7]
-        temp3 = temp3 + temp2[16]
-        temp3 = temp3 + temp2[17]
-        temp3 = temp3 + temp2[26]
-        temp3 = temp3 + temp2[27]
-        temp3 = temp3 + temp2[4]
-        temp3 = temp3 + temp2[5]
-        temp3 = temp3 + temp2[14]
-        temp3 = temp3 + temp2[15]
-        temp3 = temp3 + temp2[24]
-        temp3 = temp3 + temp2[25]
-        temp3 = temp3 + temp2[2]
-        temp3 = temp3 + temp2[3]
-        temp3 = temp3 + temp2[12]
-        temp3 = temp3 + temp2[13]
-        temp3 = temp3 + temp2[22]
-        temp3 = temp3 + temp2[23]
-
+        temp3=temp2[0]+temp2[1]+temp2[10]+temp2[11]+temp2[20]+temp2[21]+temp2[30]+temp2[31]+temp2[8]+temp2[9]+temp2[18]+temp2[19]+temp2[28] + temp2[29] + temp2[6] + temp2[7] + temp2[16] + temp2[17] + temp2[26] + temp2[27] + temp2[4] + temp2[5] + temp2[14] + temp2[15] + temp2[24] + temp2[25] + temp2[2] + temp2[3] + temp2[12] + temp2[13] + temp2[22] + temp2[23]
         return temp3
 
+#xor takes in two hex strings of the same size, then peforms an xor on these operands to produce a singular hex string
 def xor(temp1,temp2):
         temp1=BitVector(hexstring=temp1)
         temp2=BitVector(hexstring=temp2)
         temp3=temp1^temp2
         return temp3.get_bitvector_in_hex()
 
+#findroundkey takes in the hex pass string of the size 32 and an integer value between 1-10 for the round number. After operations are performed, a hex pass string of the size 32 is generated
 def findroundkey(temp1, case):
     w0=temp1[0:8]
     w1=temp1[8:16]
