@@ -1,4 +1,4 @@
-from AESfunc import * #import AESfunc module to use functions created for this program
+from AESencryptfunc import * #import AESencryptfunc module to use functions created for this program
 import math #import math module to use function such as ceiling
 
 #check that script is running with the two text files as the two parameters or else quit
@@ -37,11 +37,10 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
         plaintextseg = message[start:end + 16]
     else: #or else if the end pointer is equal to or greator than the size of the message
         plaintextseg = message[start:length]
-        for z in range(0,((end+16)-length)): #run a while loop to pad the message segement to become 16 characters, if it is 16 already the loop will not run
+        for z in range(0,((end+16)-length),2): #run a while loop to pad the message segement to become 16 characters, if it is 16 already the loop will not run
             plaintextseg=BitVector(textstring=plaintextseg)
             plaintextseg=plaintextseg.get_bitvector_in_hex()+"00"
             plaintextseg=BitVector(hexstring=plaintextseg).get_bitvector_in_ascii()
-            z=z+1
     #add round key zero/ find round key one
     print("The round key string is : %s" % PassPhrase)
     print("The part of the message to be encrypted is : %s" % plaintextseg)
