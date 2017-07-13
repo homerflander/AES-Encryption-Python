@@ -48,10 +48,10 @@ print(roundkeys[9])
 for y in range(1, loopmsg): # loop to encrypt all segments of the message
     plaintextseg = message[start:end]
     print(plaintextseg)
-    # add round key ten
+    # add round key
     bv1 = BitVector(hexstring=plaintextseg)
     bv2 = BitVector(hexstring=roundkeys[9])
     resultbv = bv1 ^ bv2
     myhexstring = resultbv.get_bitvector_in_hex()
     print("The output after adding the roundkey 10 is: %s" % myhexstring)
-
+    #inverse shift row
