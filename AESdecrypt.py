@@ -43,11 +43,11 @@ roundkey8=findroundkey(roundkey7,8)
 roundkey9=findroundkey(roundkey8,9)
 roundkey10=findroundkey(roundkey9,10)
 roundkeys=[roundkey1,roundkey2,roundkey3,roundkey4,roundkey5,roundkey6,roundkey7,roundkey8,roundkey9,roundkey10]
-print(roundkeys[9])
+print("Roundkey 10 is: %s" % roundkeys[9])
 # set up the segement message loop parameters
 for y in range(1, loopmsg): # loop to encrypt all segments of the message
     plaintextseg = message[start:end]
-    print(plaintextseg)
+    print("The ciphertext segment to decrypt is: %s" % plaintextseg)
     # add round key
     bv1 = BitVector(hexstring=plaintextseg)
     bv2 = BitVector(hexstring=roundkeys[9])
@@ -55,3 +55,5 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
     myhexstring = resultbv.get_bitvector_in_hex()
     print("The output after adding the roundkey 10 is: %s" % myhexstring)
     #inverse shift row
+    myhexstring=invshiftrow(myhexstring)
+    print("The output after invshiftrow 10 is: %s" % myhexstring)

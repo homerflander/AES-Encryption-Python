@@ -159,7 +159,7 @@ def shiftrow(temp2):
         return temp3
 
 # shiftrow takes in a hex string of the size 8 or 32, then performs a shifting operation to output the a converted hex string
-def shiftrow(temp2):
+def invshiftrow(temp2):
 
     if (len(temp2) == 8):
         temp3 = temp2[6] + temp2[7] + temp2[0] + temp2[1] + temp2[2] + temp2[3] + temp2[4] + temp2[5]#in progress
@@ -169,12 +169,13 @@ def shiftrow(temp2):
         #      +temp2[18]+temp2[19]+temp2[28] + temp2[29] + temp2[6] + temp2[7] + temp2[16] + temp2[17] + temp2[26] + temp2[27]\
         #      + temp2[4] + temp2[5] + temp2[14] + temp2[15] + temp2[24] + temp2[25] + temp2[2] + temp2[3] + temp2[12] + temp2[13]\
         #      + temp2[22] + temp2[23]
-
+        # 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+        # 00,01,10,11,20,21,30,31,08,09,18,19,28,29,06,07,16,17,26,27,04,05,14,15,24,25,02,03,12,13,22,23
         # working on this, second line
         temp3=temp2[0]+temp2[1]+temp2[26]+temp2[27]+temp2[20]+temp2[21]+temp2[14]+temp2[15]+temp2[8]+temp2[9]\
-              +temp2[18]+temp2[19]+temp2[28] + temp2[29] + temp2[6] + temp2[7] + temp2[16] + temp2[17] + temp2[26] + temp2[27]\
-              + temp2[4] + temp2[5] + temp2[14] + temp2[15] + temp2[24] + temp2[25] + temp2[2] + temp2[3] + temp2[12] + temp2[13]\
-              + temp2[22] + temp2[23]
+              +temp2[2]+temp2[3]+temp2[28] + temp2[29] + temp2[22] + temp2[23] + temp2[16] + temp2[17] + temp2[10] + temp2[11]\
+              + temp2[4] + temp2[5] + temp2[30] + temp2[31] + temp2[24] + temp2[25] + temp2[18] + temp2[19] + temp2[12] + temp2[13]\
+              + temp2[6] + temp2[7]
 
         return temp3
 
