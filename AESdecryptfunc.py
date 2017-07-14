@@ -194,13 +194,13 @@ def invsubbyte(myhexstring):
     part6 = ['90', 'd8', 'ab', '00', '8c', 'bc', 'd3', '0a', 'f7', 'e4', '58', '05', 'b8', 'b3', '45', '06']#inverse sbox 
     part7 = ['d0', '2c', '1e', '8f', 'ca', '3f', '0f', '02', 'c1', 'af', 'bd', '03', '01', '13', '8a', '6b']#inverse sbox 
     part8 = ['3a', '91', '11', '41', '4f', '67', 'dc', 'ea', '97', 'f2', 'cf', 'ce', 'f0', 'b4', 'e6', '73']#inverse sbox
-    part9 = ['60', '81', '4f', 'dc', '22', '2a', '90', '88', '46', 'ee', 'b8', '14', 'de', '5e', '0b', 'db']
-    part10 = ['e0', '32', '3a', '0a', '49', '06', '24', '5c', 'c2', 'd3', 'ac', '62', '91', '95', 'e4', '79']
-    part11 = ['e7', 'c8', '37', '6d', '8d', 'd5', '4e', 'a9', '6c', '56', 'f4', 'ea', '65', '7a', 'ae', '08']
-    part12 = ['ba', '78', '25', '2e', '1c', 'a6', 'b4', 'c6', 'e8', 'dd', '74', '1f', '4b', 'bd', '8b', '8a']
-    part13 = ['70', '3e', 'b5', '66', '48', '03', 'f6', '0e', '61', '35', '57', 'b9', '86', 'c1', '1d', '9e']
-    part14 = ['e1', 'f8', '98', '11', '69', 'd9', '8e', '94', '9b', '1e', '87', 'e9', 'ce', '55', '28', 'df']
-    part15 = ['8c', 'a1', '89', '0d', 'bf', 'e6', '42', '68', '41', '99', '2d', '0f', 'b0', '54', 'bb', '16']
+    part9 = ['96', 'ac', '74', '22', 'e7', 'ad', '35', '85', 'e2', 'f9', '37', 'e8', '1c', '75', 'df', '6e']#inverse sbox
+    part10 = ['47', 'f1', '1a', '71', '1d', '29', 'c5', '89', '6f', 'b7', '62', '0e', 'aa', '18', 'be', '1b']#inverse sbox
+    part11 = ['fc', '56', '3e', '4b', 'c6', 'd2', '79', '20', '9a', 'db', 'c0', 'fe', '78', 'cd', '5a', 'f4']#inverse sbox
+    part12 = ['1f', 'dd', 'a8', '33', '88', '07', 'c7', '31', 'b1', '12', '10', '59', '27', '80', 'ec', '5f']#inverse sbox
+    part13 = ['60', '51', '7f', 'a9', '19', 'b5', '4a', '0d', '2d', 'e5', '7a', '9f', '93', 'c9', '9c', 'ef']#inverse sbox
+    part14 = ['a0', 'e0', '3b', '4d', 'ae', '2a', 'f5', 'b0', 'c8', 'eb', 'bb', '3c', '83', '53', '99', '61']#inverse sbox
+    part15 = ['17', '2b', '04', '7e', 'ba', '77', 'd6', '26', 'e1', '69', '14', '63', '55', '21', '0c', '7d']#inverse sbox
 
 
     lookuptable=[part0,part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11,part12,part13,part14,part15]
@@ -281,3 +281,141 @@ def invsubbyte(myhexstring):
         loop2=loop2+2
         temp2 = temp2 + temp
     return temp2
+
+#mix column takes in an a 128 bit string, performs a series of matrix multiplication to output a hex string
+def invmixcolumn(bv3):
+        bv01 = (bv3[0:8])
+        bv23 = (bv3[8:16])
+        bv45 = (bv3[16:24])
+        bv67 = (bv3[24:32])
+        bv89 = (bv3[32:40])
+        bv1011 = (bv3[40:48])
+        bv1213 = (bv3[48:56])
+        bv1415 = (bv3[56:64])
+        bv1617 = (bv3[64:72])
+        bv1819 = (bv3[72:80])
+        bv2021 = (bv3[80:88])
+        bv2223 = (bv3[88:96])
+        bv2425 = (bv3[96:104])
+        bv2627 = (bv3[104:112])
+        bv2829 = (bv3[112:120])
+        bv3031 = (bv3[120:128])
+
+        eightlim = BitVector(bitstring='100011011')
+        one = BitVector(bitstring='0001')
+        two = BitVector(bitstring='0010')
+        three = BitVector(bitstring='0011')
+        nine = BitVector(bitstring='1001')
+        eleven = BitVector(bitstring='1011')
+        thirteen = BitVector(bitstring='1101')
+        fourteen = BitVector(bitstring='1110')
+
+        tempbv1 = bv01.gf_multiply_modular(fourteen, eightlim, 8) #done
+        tempbv2 = bv23.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv3 = bv45.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv4 = bv67.gf_multiply_modular(nine, eightlim, 8)
+        newbv01 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv01.gf_multiply_modular(nine, eightlim, 8) #done
+        tempbv2 = bv23.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv3 = bv45.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv4 = bv67.gf_multiply_modular(thirteen, eightlim, 8)
+        newbv23 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv01.gf_multiply_modular(thirteen, eightlim, 8)#done
+        tempbv2 = bv23.gf_multiply_modular(nine, eightlim, 8)
+        tempbv3 = bv45.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv4 = bv67.gf_multiply_modular(eleven, eightlim, 8)
+        newbv45 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv01.gf_multiply_modular(eleven, eightlim, 8)#done
+        tempbv2 = bv23.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv3 = bv45.gf_multiply_modular(nine, eightlim, 8)
+        tempbv4 = bv67.gf_multiply_modular(fourteen, eightlim, 8)
+        newbv67 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+
+
+
+        tempbv1 = bv89.gf_multiply_modular(fourteen, eightlim, 8) #done
+        tempbv2 = bv1011.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv3 = bv1213.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv4 = bv1415.gf_multiply_modular(nine, eightlim, 8)
+        newbv89 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv89.gf_multiply_modular(nine, eightlim, 8) #done
+        tempbv2 = bv1011.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv3 = bv1213.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv4 = bv1415.gf_multiply_modular(thirteen, eightlim, 8)
+        newbv1011 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv89.gf_multiply_modular(thirteen, eightlim, 8)#done
+        tempbv2 = bv1011.gf_multiply_modular(nine, eightlim, 8)
+        tempbv3 = bv1213.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv4 = bv1415.gf_multiply_modular(eleven, eightlim, 8)
+        newbv1213 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv89.gf_multiply_modular(eleven, eightlim, 8)#done
+        tempbv2 = bv1011.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv3 = bv1213.gf_multiply_modular(nine, eightlim, 8)
+        tempbv4 = bv1415.gf_multiply_modular(fourteen, eightlim, 8)
+        newbv1415 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+
+
+
+        tempbv1 = bv1617.gf_multiply_modular(fourteen, eightlim, 8) #done
+        tempbv2 = bv1819.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv3 = bv2021.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv4 = bv2223.gf_multiply_modular(nine, eightlim, 8)
+        newbv1617 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv1617.gf_multiply_modular(nine, eightlim, 8) #done
+        tempbv2 = bv1819.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv3 = bv2021.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv4 = bv2223.gf_multiply_modular(thirteen, eightlim, 8)
+        newbv1819 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv1617.gf_multiply_modular(thirteen, eightlim, 8)#done
+        tempbv2 = bv1819.gf_multiply_modular(nine, eightlim, 8)
+        tempbv3 = bv2021.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv4 = bv2223.gf_multiply_modular(eleven, eightlim, 8)
+        newbv2021 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv1617.gf_multiply_modular(eleven, eightlim, 8)#done
+        tempbv2 = bv1819.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv3 = bv2021.gf_multiply_modular(nine, eightlim, 8)
+        tempbv4 = bv2223.gf_multiply_modular(fourteen, eightlim, 8)
+        newbv2223 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+
+
+
+
+        tempbv1 = bv2425.gf_multiply_modular(fourteen, eightlim, 8) #done
+        tempbv2 = bv2627.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv3 = bv2829.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv4 = bv3031.gf_multiply_modular(nine, eightlim, 8)
+        newbv2425 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv2425.gf_multiply_modular(nine, eightlim, 8) #done
+        tempbv2 = bv2627.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv3 = bv2829.gf_multiply_modular(eleven, eightlim, 8)
+        tempbv4 = bv3031.gf_multiply_modular(thirteen, eightlim, 8)
+        newbv2627 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv2425.gf_multiply_modular(thirteen, eightlim, 8)#done
+        tempbv2 = bv2627.gf_multiply_modular(nine, eightlim, 8)
+        tempbv3 = bv2829.gf_multiply_modular(fourteen, eightlim, 8)
+        tempbv4 = bv3031.gf_multiply_modular(eleven, eightlim, 8)
+        newbv2829 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        tempbv1 = bv2425.gf_multiply_modular(eleven, eightlim, 8)#done
+        tempbv2 = bv2627.gf_multiply_modular(thirteen, eightlim, 8)
+        tempbv3 = bv2829.gf_multiply_modular(nine, eightlim, 8)
+        tempbv4 = bv3031.gf_multiply_modular(fourteen, eightlim, 8)
+        newbv3031 = tempbv1 ^ tempbv2 ^ tempbv3 ^ tempbv4
+
+        newbv = newbv01 + newbv23 + newbv45 + newbv67 + newbv89 + newbv1011 + newbv1213 + newbv1415 + newbv1617 + newbv1819 + newbv2021 + newbv2223 + newbv2425 + newbv2627 + newbv2829 + newbv3031
+        newbvashex = newbv.get_bitvector_in_hex()
+        return newbvashex

@@ -29,6 +29,7 @@ length=len(message)#check the entire size of the message
 loopmsg=0.00#create a decimal value
 loopmsg=math.ceil(length/32)+1#use formula to figure how long the message is and how many 16 character segmentss must be decrypted
 outputhex=""#setup output message in hex
+asciioutput=""
 
 #need to setup roundkeys here
 PassPhrase=BitVector(textstring=PassPhrase)
@@ -56,4 +57,46 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
     print("The output after adding the roundkey 10 is: %s" % myhexstring)
     #inverse shift row
     myhexstring=invshiftrow(myhexstring)
-    print("The output after invshiftrow 10 is: %s" % myhexstring)
+    print("The output after invshiftrow is: %s" % myhexstring)
+    #inverse subbyte
+    myhexstring=invsubbyte(myhexstring)
+    print("The output after invsubbyte is: %s" % myhexstring)
+
+    for x in range(8, -1, -1):
+        print("Round: %i" % (x+1))
+        # add roundkey for current round
+        bv1 = BitVector(hexstring=myhexstring)
+        bv2 = BitVector(hexstring=roundkeys[x])
+        resultbv = bv1 ^ bv2
+        myhexstring = resultbv.get_bitvector_in_hex()
+        print("The output after adding the roundkey %i is: %s" %((x+1),myhexstring))
+        # mix column
+        bv3 = BitVector(hexstring=myhexstring)
+        myhexstring=invmixcolumn(bv3)
+        print("The output after invmixcolumn %i is: %s" % ((x + 1), myhexstring))
+        # shift rows
+        myhexstring = invshiftrow(myhexstring)
+        print("The output after invshiftrow is: %s" % myhexstring)
+        # sub byte
+        myhexstring = invsubbyte(myhexstring)
+        print("The output after invsubbyte is: %s" % myhexstring)
+
+    #add initial round key
+    bv1 = BitVector(hexstring=myhexstring)
+    bv2 = PassPhrase
+    resultbv = bv1 ^ bv2
+    myhexstring = resultbv.get_bitvector_in_hex()
+    print("The output after adding the initial roundkey is: %s" % myhexstring)
+
+    start = start - 32 #increment start pointer
+    end = end - 32 #increment end pointer
+
+    outputhex = myhexstring+outputhex
+
+print(myhexstring)
+outputhex = BitVector(hexstring=outputhex)
+asciioutput = outputhex.get_bitvector_in_ascii()
+print("The decrypted message for the entire ciphertext is: %s" % asciioutput)
+FILEOUT = open(sys.argv[2], 'w')
+FILEOUT.write(asciioutput)
+FILEOUT.close()
