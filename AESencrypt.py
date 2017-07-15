@@ -31,6 +31,20 @@ loopmsg=0.00#create a decimal value
 loopmsg=math.ceil(length/16)+1#use formula to figure how long the message is and how many 16 character segmentss must be encrypted
 outputhex=""#setup output message in hex
 
+#need to setup roundkeys here
+PassPhrase=BitVector(textstring=PassPhrase)
+roundkey1=findroundkey(PassPhrase.get_bitvector_in_hex(),1)
+roundkey2=findroundkey(roundkey1,2)
+roundkey3=findroundkey(roundkey2,3)
+roundkey4=findroundkey(roundkey3,4)
+roundkey5=findroundkey(roundkey4,5)
+roundkey6=findroundkey(roundkey5,6)
+roundkey7=findroundkey(roundkey6,7)
+roundkey8=findroundkey(roundkey7,8)
+roundkey9=findroundkey(roundkey8,9)
+roundkey10=findroundkey(roundkey9,10)
+roundkeys=[roundkey1,roundkey2,roundkey3,roundkey4,roundkey5,roundkey6,roundkey7,roundkey8,roundkey9,roundkey10]
+
 # set up the segement message loop parameters
 for y in range(1, loopmsg): # loop to encrypt all segments of the message
     if(end+16<length): #if the end pointer is less than the size of the message, then set the segment to be 16 characters
@@ -46,11 +60,9 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
     print("The part of the message to be encrypted is : %s" % plaintextseg)
     bv1 = BitVector(textstring=plaintextseg)
     print("The plaintext message in hex is : %s" % bv1.get_bitvector_in_hex())
-    bv2 = BitVector(textstring=PassPhrase)
+    bv2 = PassPhrase
     print("The password in hex/ roundkey zero is : %s" % bv2.get_bitvector_in_hex())
     resultbv=bv1^bv2
-    roundkey=findroundkey(bv2.get_bitvector_in_hex(),1)
-    print("The round key one is : %s" % roundkey)
     myhexstring = resultbv.get_bitvector_in_hex()
     print("The initial adding round key output is : %s" % myhexstring)
 
@@ -73,15 +85,12 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
 
         #add roundkey for current round
         bv1 = BitVector(bitlist=newbv)
-        bv2 = BitVector(hexstring=roundkey)
+        bv2 = BitVector(hexstring=roundkeys[x-1])
         resultbv = bv1 ^ bv2
         myhexresult = resultbv.get_bitvector_in_hex()
+        print("The round key %i is " % (x) + roundkeys[x-1])
+
         print("The output after adding the round key: %s" % myhexresult)
-
-        #create new roundkey for next round
-        roundkey=findroundkey(roundkey,x+1)
-        print("The round key %i is " %(x+1) + roundkey)
-
 
     #start round 10
     # sub byte round 10
@@ -97,7 +106,7 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
     # addround key round 10
     newbv = BitVector(hexstring=temp2)
     bv1 = BitVector(bitlist=newbv)
-    bv2 = BitVector(hexstring=roundkey)
+    bv2 = BitVector(hexstring=roundkeys[9])
     resultbv = bv1 ^ bv2
     myhexstring = resultbv.get_bitvector_in_hex()
     print("The output after adding the roundkey is: %s" % myhexstring)
