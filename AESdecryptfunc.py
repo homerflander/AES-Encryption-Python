@@ -69,7 +69,7 @@ def subbyte(myhexstring):
 
     lookuptable=[part0,part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11,part12,part13,part14,part15]
 
-    print("The string size is ", len(myhexstring), " and the loop will run", math.ceil(len(myhexstring)/2), " times." )
+    #print("The string size is ", len(myhexstring), " and the loop will run", math.ceil(len(myhexstring)/2), " times." )
     for loop in range(0, math.ceil(len(myhexstring)/2) ):
         x = ""
         y = ""
@@ -205,7 +205,7 @@ def invsubbyte(myhexstring):
 
     lookuptable=[part0,part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11,part12,part13,part14,part15]
 
-    print("The string size is ", len(myhexstring), " and the loop will run", math.ceil(len(myhexstring)/2), " times." )
+    #print("The string size is ", len(myhexstring), " and the loop will run", math.ceil(len(myhexstring)/2), " times." )
     for loop in range(0, math.ceil(len(myhexstring)/2) ):
         x = ""
         y = ""
