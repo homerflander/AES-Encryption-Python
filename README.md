@@ -23,3 +23,24 @@ General Overview Process: <br />
 AES Encryption and Decryption Process: <br />
 ![aesprocess](/Demo/2.png)
 <br /><br /><br />
+plaintext1.txt File Contents: <br />
+![plaintext1](/Demo/3.png)
+<br /><br /><br />
+AESencryption Folder Contents: <br />
+![aesfolder](/Demo/4.png)
+<br /><br /><br />
+Running AESEncrypt.py: <br />
+![encrypt.py](/Demo/5.png)
+<br /><br /><br />
+Checking ciphertext.txt Contents: <br />
+![ciphertext](/Demo/6.png)
+<br /><br /><br />
+Running AESDecrypt with Wrong Passphrase: <br />
+![wrong](/Demo/7.png)
+<br /><br /><br />
+Running AESDecrypt with Correct Passphrase: <br />
+![right](/Demo/8.png)
+<br /><br /><br />
+Checking plaintext1.txt file with plaintext2.txt file: <br />
+![lastcheck](/Demo/9.png)
+<br /><br /><br />
