@@ -3,7 +3,6 @@
 Created by Van. June 2017 </br>
 
 TO DO LIST:</br>
-ENHANCE PERFORMANCE/LEAVE NOTES</br>
 CREATE DEMO PICS</br>
 
 Resource(s) Used: </br>
@@ -16,3 +15,11 @@ Two scripts in Python to encrypt/decrypt using the 128 bits AES algorithm, ECB m
 
 Notes: </br> 
 ECB is not considered very secure since it has vulnerabilities such as encrypting the same plaintext block will create the same block of ciphertext. Possible future improvement is to use a more psuedo random mode other than ECB.</br>
+<br />
+--------------------Demonstration--------------------<br />
+General Overview Process: <br />
+![general](/Demo/1.png)
+<br /><br /><br />
+AES Encryption and Decryption Process: <br />
+![aesprocess](/Demo/2.png)
+<br /><br /><br />
