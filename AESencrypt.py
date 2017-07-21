@@ -100,7 +100,6 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
 
     #set encrypted hex segement of message to output string
     outputhextemp = resultbv.get_hex_string_from_bitvector()
-
     FILEOUT.write(outputhextemp)
     start = start + 16 #increment start pointer
     end = end + 16 #increment end pointer

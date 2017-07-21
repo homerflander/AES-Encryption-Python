@@ -92,6 +92,7 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
 
     outputhex = BitVector(hexstring=myhexstring)
     asciioutput = outputhex.get_bitvector_in_ascii()
+    asciioutput=asciioutput.replace('\x00','')
     FILEOUT.write(asciioutput)
 
 FILEOUT.close()
