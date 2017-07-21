@@ -10,7 +10,6 @@ PassPhrase=""
 while(len(PassPhrase)!=16):
     print("Enter in the 16 character passphrase to encrypt your text file %s" %sys.argv[1])
     PassPhrase=input()#takes in user input of char, eg. "Iwanttolearnkung"
-    #print(len(PassPhrase))
     if(len(PassPhrase)<16):#check if less than 16 characters, if so add one space character until 16 chars
         while(len(PassPhrase)!=16):
             PassPhrase=PassPhrase+" "
@@ -46,6 +45,7 @@ roundkey9=findroundkey(roundkey8,9)
 roundkey10=findroundkey(roundkey9,10)
 roundkeys=[roundkey1,roundkey2,roundkey3,roundkey4,roundkey5,roundkey6,roundkey7,roundkey8,roundkey9,roundkey10]
 
+#set up FILEOUT to write
 FILEOUT = open(sys.argv[2], 'w')
 
 # set up the segement message loop parameters
@@ -59,63 +59,48 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
             plaintextseg=plaintextseg.get_bitvector_in_hex()+"00"
             plaintextseg=BitVector(hexstring=plaintextseg).get_bitvector_in_ascii()
     #add round key zero/ find round key one
-    #print("The round key string is : %s" % PassPhrase)
-    #print("The part of the message to be encrypted is : %s" % plaintextseg)
     bv1 = BitVector(textstring=plaintextseg)
-    #print("The plaintext message in hex is : %s" % bv1.get_bitvector_in_hex())
     bv2 = PassPhrase
-    #print("The password in hex/ roundkey zero is : %s" % bv2.get_bitvector_in_hex())
     resultbv=bv1^bv2
     myhexstring = resultbv.get_bitvector_in_hex()
-    #print("The initial adding round key output is : %s" % myhexstring)
 
     for x in range(1, 10):  # loop through 9 rounds
         # sub byte
-        #print("Round: %i" % x)
         myhexstring = resultbv.get_bitvector_in_hex()
         temp1=subbyte(myhexstring)
-        #print("The subbyte output is: %s" % temp1)
 
         # shift rows
         temp2=shiftrow(temp1)
-        #print("The shiftrow output is: %s" % temp2)
 
         # mix column
         bv3 = BitVector(hexstring=temp2)
         newbvashex=mixcolumn(bv3)
         newbv=BitVector(hexstring=newbvashex)
-        #print("The Mixcolumn Output is: %s" % newbvashex)
 
         #add roundkey for current round
         bv1 = BitVector(bitlist=newbv)
         bv2 = BitVector(hexstring=roundkeys[x-1])
         resultbv = bv1 ^ bv2
         myhexresult = resultbv.get_bitvector_in_hex()
-        #print("The round key %i is " % (x) + roundkeys[x-1])
-
-        #print("The output after adding the round key: %s" % myhexresult)
 
     #start round 10
     # sub byte round 10
-    #print("Round 10:")
     myhexstring = resultbv.get_bitvector_in_hex()
     temp1=subbyte(myhexstring)
-    #print("The subbyte output of round 10 is: %s" % temp1)
 
     # shift rows round 10
     temp2=shiftrow(temp1)
-    #print("The output after shiftrow is: %s" % temp2)
 
-    # addround key round 10
+    # add round key round 10
     newbv = BitVector(hexstring=temp2)
     bv1 = BitVector(bitlist=newbv)
     bv2 = BitVector(hexstring=roundkeys[9])
     resultbv = bv1 ^ bv2
     myhexstring = resultbv.get_bitvector_in_hex()
-    #print("The output after adding the roundkey is: %s" % myhexstring)
+
     #set encrypted hex segement of message to output string
     outputhextemp = resultbv.get_hex_string_from_bitvector()
-    #print("The outputhex value for this part of the message is: %s" % outputhextemp)
+
     FILEOUT.write(outputhextemp)
     start = start + 16 #increment start pointer
     end = end + 16 #increment end pointer
@@ -126,4 +111,3 @@ FILEOUT.close()
 file2=open(sys.argv[2], "r")
 print("The output hex value for the entire message is:\n%s\n" % file2.read())
 file2.close()
-
