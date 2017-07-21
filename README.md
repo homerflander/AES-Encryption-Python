@@ -14,6 +14,8 @@ Two scripts in Python to encrypt/decrypt using the 128 bits AES algorithm, ECB m
 Notes: </br> 
 -ECB is not considered secure since it has vulnerabilities in encrypting the same plaintext block. Encrypting the same plaintext block will create the same block of ciphertext. Possible future improvement is to use a more psuedo random mode other than ECB.</br>
 <br />
+-Online tools will use different padding techniques for the plaintext/key, so if the key ascii string length is not exactly 16 characters or the plaintext ascii string legnth is not a divisible by 16, this script will have a different ciphertext hex result from these online tools.<br />
+<br />
 --------------------Demonstration--------------------<br />
 General Overview Process: <br />
 ![general](/Demo/1.png)
@@ -41,4 +43,7 @@ Running AESDecrypt.py Scipt with Correct Passphrase: <br />
 <br /><br /><br />
 Checking plaintext1.txt File with plaintext2.txt File: <br />
 ![lastcheck](/Demo/9.png)
+<br /><br /><br />
+With Constraints Considered, Checking Encrypt Script with Online AES Encrypt Tool: <br />
+![lastcheck](/Demo/10.png)
 <br /><br /><br />
