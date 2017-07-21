@@ -29,18 +29,18 @@ plaintext1.txt File Contents: <br />
 AESencryption Folder Contents: <br />
 ![aesfolder](/Demo/4.png)
 <br /><br /><br />
-Running AESEncrypt.py: <br />
+Running AESEncrypt.py Script: <br />
 ![encrypt.py](/Demo/5.png)
 <br /><br /><br />
-Checking ciphertext.txt Contents: <br />
+Checking ciphertext.txt File Contents: <br />
 ![ciphertext](/Demo/6.png)
 <br /><br /><br />
-Running AESDecrypt with Wrong Passphrase: <br />
+Running AESDecrypt.py Script with Wrong Passphrase: <br />
 ![wrong](/Demo/7.png)
 <br /><br /><br />
-Running AESDecrypt with Correct Passphrase: <br />
+Running AESDecrypt.py Scipt with Correct Passphrase: <br />
 ![right](/Demo/8.png)
 <br /><br /><br />
-Checking plaintext1.txt file with plaintext2.txt file: <br />
+Checking plaintext1.txt File with plaintext2.txt File: <br />
 ![lastcheck](/Demo/9.png)
 <br /><br /><br />
