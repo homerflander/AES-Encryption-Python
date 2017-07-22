@@ -9,12 +9,10 @@ Resource(s) Used: </br>
 -Used Online AES Encryption Tools at http://aes.online-domain-tools.com/ and http://extranet.cryptomathic.com/aescalc/index to check work 
 
 Summary:</br>
-Two scripts in Python to encrypt/decrypt using the 128 bits AES algorithm, ECB mode with hex "00" as padding for each character. For the encrypt, an ascii plaintext file is taken as the input, then an encrypted hex file is outputted. For the decrypt, a ciphertext hex file is taken as the input, then a decrypted ascii file is outputted.</br>
+Two scripts in Python to encrypt/decrypt using the 128 bits AES algorithm, ECB mode with hex "00" as padding for each character. For the encryption, an ascii plaintext file is taken as the input, then an encrypted hex file is outputted. For the decryption, a ciphertext hex file is taken as the input, then a decrypted ascii file is outputted.</br>
 
 Notes: </br> 
 -ECB is not considered secure since it has vulnerabilities in encrypting the same plaintext block. Encrypting the same plaintext block will create the same block of ciphertext. Possible future improvement is to use a more psuedo random mode other than ECB.</br>
-<br />
--Online tools will use different padding techniques for the plaintext/key, so if the key ascii string length is not exactly 16 characters or the plaintext ascii string length is not a divisible by 16, this script will have a different ciphertext hex result from online AES encyption tools. This will not be a problem since the AESdecrypt.py script will still be able to decrypt any ciphertext from the AESencrypt.py script given the correct key. <br />
 <br />
 --------------------Demonstration--------------------<br />
 General Overview Process: <br />
@@ -44,7 +42,6 @@ Running AESdecrypt.py Scipt with Correct Passphrase: <br />
 Checking plaintext1.txt File with plaintext2.txt File: <br />
 ![lastcheck](/Demo/9.png)
 <br /><br /><br />
-With Constraints Considered, Checking AESencrypt.py Script with Online AES Encrypt Tool: <br />
-(See "Notes" Section Above for Required Constaints)<br />
+Checking AESencrypt.py Script with Online AES Encrypt Tool: <br />
 ![lastcheck](/Demo/10.png)
 <br /><br /><br />
