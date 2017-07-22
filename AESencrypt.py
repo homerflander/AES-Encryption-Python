@@ -12,7 +12,7 @@ while(len(PassPhrase)!=16):
     PassPhrase=input()#takes in user input of char, eg. "Iwanttolearnkung"
     if(len(PassPhrase)<16):#check if less than 16 characters, if so add one space character until 16 chars
         while(len(PassPhrase)!=16):
-            PassPhrase=PassPhrase+" "
+            PassPhrase=PassPhrase+"\00"
     if(len(PassPhrase)>16):#check if bigger than 16 characters, if so then truncate it to be only 16 chars from [0:16]
         print("Your passphrase was larger than 16, truncating passphrase.")
         PassPhrase=PassPhrase[0:16]
@@ -23,6 +23,18 @@ message=(file.read())
 print("Inside your plaintext message is:\n%s\n" % message)
 file.close()
 
+message=BitVector(textstring=message)
+message=message.get_bitvector_in_hex()
+replacementptr=0
+while(replacementptr<len(message)):
+    if(message[replacementptr:replacementptr+2]=='0a'):
+        message=message[0:replacementptr]+'0d'+message[replacementptr:len(message)]
+        replacementptr=replacementptr+4
+    else:
+        replacementptr=replacementptr+2
+
+message=BitVector(hexstring=message)
+message=message.get_bitvector_in_ascii()
 #set up some parameters
 start=0#set starting pointer for the part to encrypt of the plaintext
 end=0#set ending pointer for the part to encrypt of the plaintex
@@ -54,10 +66,11 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
         plaintextseg = message[start:end + 16]
     else: #or else if the end pointer is equal to or greator than the size of the message
         plaintextseg = message[start:length]
-        for z in range(0,((end+16)-length),2): #run a while loop to pad the message segement to become 16 characters, if it is 16 already the loop will not run
-            plaintextseg=BitVector(textstring=plaintextseg)
-            plaintextseg=plaintextseg.get_bitvector_in_hex()+"00"
-            plaintextseg=BitVector(hexstring=plaintextseg).get_bitvector_in_ascii()
+        for z in range(0,((end+16)-length),1): #run a while loop to pad the message segement to become 16 characters, if it is 16 already the loop will not run
+            plaintextseg = plaintextseg+"\00"
+            #plaintextseg2=BitVector(textstring=plaintextseg)
+            #print(plaintextseg2.get_bitvector_in_hex())
+
     #add round key zero/ find round key one
     bv1 = BitVector(textstring=plaintextseg)
     bv2 = PassPhrase

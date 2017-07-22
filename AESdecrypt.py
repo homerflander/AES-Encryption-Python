@@ -12,7 +12,7 @@ while(len(PassPhrase)!=16):
     PassPhrase=input()#takes in user input of char, eg. "Iwanttolearnkung"
     if(len(PassPhrase)<16):#check if less than 16 characters, if so add one space character until 16 chars
         while(len(PassPhrase)!=16):
-            PassPhrase=PassPhrase+" "
+            PassPhrase=PassPhrase+"\00"
     if(len(PassPhrase)>16):#check if bigger than 16 characters, if so then truncate it to be only 16 chars from [0:16]
         print("Your passphrase was larger than 16, truncating passphrase.")
         PassPhrase=PassPhrase[0:16]
@@ -89,6 +89,13 @@ for y in range(1, loopmsg): # loop to encrypt all segments of the message
 
     start = start + 32 #increment start pointer
     end = end + 32 #increment end pointer
+
+    replacementptr = 0
+    while (replacementptr < len(myhexstring)):
+        if (myhexstring[replacementptr:replacementptr + 2] == '0d'):
+            myhexstring = myhexstring[0:replacementptr] + myhexstring[replacementptr+2:len(myhexstring)]
+        else:
+            replacementptr = replacementptr + 2
 
     outputhex = BitVector(hexstring=myhexstring)
     asciioutput = outputhex.get_bitvector_in_ascii()
