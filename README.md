@@ -9,7 +9,7 @@ Resource(s) Used: </br>
 -Used Online AES Encryption Tools at http://aes.online-domain-tools.com/ and http://extranet.cryptomathic.com/aescalc/index to check work 
 
 Summary:</br>
-Two scripts in Python to encrypt/decrypt using the 128 bits AES algorithm, ECB mode with hex "00" as padding for each character. For the encrypt, an ascii plaintext file is taken as the input, then an encrypted hex file is outputted. For the decrypt, a ciphertext hex file is taken as the input, then a decrypted ascii file is outputted.</br>
+Two scripts in Python to encrypt/decrypt using the 128 bits AES algorithm, ECB mode with hex "00" as padding for each character. For the encryption, an ascii plaintext file is taken as the input, then an encrypted hex file is outputted. For the decryption, a ciphertext hex file is taken as the input, then a decrypted ascii file is outputted.</br>
 
 Notes: </br> 
 -ECB is not considered secure since it has vulnerabilities in encrypting the same plaintext block. Encrypting the same plaintext block will create the same block of ciphertext. Possible future improvement is to use a more psuedo random mode other than ECB.</br>
